@@ -90,7 +90,7 @@ curl -i -X POST http://localhost:3000/tasks -H "Content-Type: application/json" 
 
 ## The mortality experiment
 
-Restarting the server resets `tasks` back to the 3 seeded example tasks — anything created, updated, or deleted during the previous run is gone. This happens because the data lives only in a JavaScript array in the process's memory; nothing is ever written to disk. It's the reason Week 3 introduces a real database: to make data survive a restart.
+I created a few extra tasks, updated one, and deleted another, then stopped the server (Ctrl+C) and ran `npm start` again. `GET /tasks` came back with only the original 3 seeded tasks — everything I'd added or changed during the session was gone. This happens because `tasks` is just a JavaScript array living in the server's memory; nothing was ever written to disk, so a fresh process starts with a fresh array. It's exactly why Week 3 introduces a real database — to make data outlive a restart.
 
 ## AI vs me
 
