@@ -92,6 +92,10 @@ curl -i -X POST http://localhost:3000/tasks -H "Content-Type: application/json" 
 
 I created a few extra tasks, updated one, and deleted another, then stopped the server (Ctrl+C) and ran `npm start` again. `GET /tasks` came back with only the original 3 seeded tasks — everything I'd added or changed during the session was gone. This happens because `tasks` is just a JavaScript array living in the server's memory; nothing was ever written to disk, so a fresh process starts with a fresh array. It's exactly why Week 3 introduces a real database — to make data outlive a restart.
 
+## Why pagination matters
+
+`GET /tasks` supports `?limit=` and `?offset=` (e.g. `/tasks?limit=2&offset=2`). Real APIs almost never return their entire dataset in one response — if a table has a million rows, sending all of them would be slow, waste bandwidth, and could crash the client trying to hold that much data in memory. Pagination lets the client ask for a manageable page at a time (e.g. "give me 20 tasks starting from #40") and load more as needed, the same way a website shows "page 1 of 50" instead of every result at once.
+
 ## AI vs me
 
 <!-- Fill this in if you do Stage 7 (bonus): your prompt, what the AI got right/wrong,
