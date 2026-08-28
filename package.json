@@ -1,13 +1,14 @@
 {
   "name": "task-api",
   "version": "1.0.0",
-  "description": "A small in-memory CRUD API for managing tasks, built with Express and documented with Swagger UI.",
+  "description": "A small CRUD API for managing tasks, built with Express, backed by SQLite, and documented with Swagger UI.",
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
     "start": "node index.js"
   },
   "dependencies": {
+    "better-sqlite3": "^13.0.3",
     "express": "^4.19.2",
     "swagger-ui-express": "^5.0.1"
   }
