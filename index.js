@@ -1,10 +1,11 @@
+require("dotenv").config();
 const express = require("express");
 const swaggerUi = require("swagger-ui-express");
 const openapiSpec = require("./openapi.json");
 const db = require("./db");
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
@@ -26,7 +27,14 @@ app.get("/", (req, res) => {
 });
 
 app.get("/health", (req, res) => {
-  res.json({ status: "ok" });
+  // Extra: a real health check pings the database too, not just the process.
+  // Real companies gate deploys on exactly this.
+  try {
+    db.prepare("SELECT 1").get();
+    res.json({ status: "ok", db: "ok" });
+  } catch (err) {
+    res.status(503).json({ status: "error", db: "unreachable" });
+  }
 });
 
 // Turn a SQLite row (done: 0/1) into the same shape the API returned in A1 (done: true/false)

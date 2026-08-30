@@ -1,8 +1,18 @@
 const Database = require("better-sqlite3");
 const path = require("path");
+const fs = require("fs");
+
+// DB_PATH lets Docker point this at a mounted volume (e.g. /data/tasks.db) so
+// the file survives container restarts and rebuilds. Locally (no Docker),
+// it defaults to a plain file next to this module, exactly like A2.
+const dbPath = process.env.DB_PATH
+  ? process.env.DB_PATH
+  : path.join(__dirname, "tasks.db");
+
+// Make sure the folder tasks.db lives in actually exists before opening it.
+fs.mkdirSync(path.dirname(dbPath), { recursive: true });
 
 // Opening a SQLite file that doesn't exist yet creates it — that's our whole "install".
-const dbPath = path.join(__dirname, "tasks.db");
 const db = new Database(dbPath);
 
 // ---------------------------------------------------------------------------
