@@ -1,0 +1,16 @@
+services:
+  api:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      # Tied to the volume mount below — not a secret, so it's set here
+      # rather than in .env. This is what makes tasks.db survive restarts.
+      DB_PATH: /data/tasks.db
+    env_file:
+      - .env
+    volumes:
+      - taskdata:/data
+
+volumes:
+  taskdata:
